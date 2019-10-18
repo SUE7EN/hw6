@@ -1,3 +1,17 @@
+//https://editor.p5js.org/SUE7EN/sketches/3nlAEcZjJN
+
+var scoreSound;
+var bounceSound;
+var winSound;
+var bgmSound;
+
+function preload() {
+  scoreSound = loadSound("score.mp3");
+  winSound = loadSound("win.mp3");
+  bounceSound = loadSound("bounce.mp3");
+  bgmSound = loadSound("bgm.mp3");
+}
+
 var playerL = 100;
 var playerR = 100;
 var scoreL = 0;
@@ -15,11 +29,11 @@ var ball = {
 function setup() {
   createCanvas(600, 400);
   colorMode(HSB, 100);
+  bgmSound.play();
 }
 
 function draw() {
   background(0, 20);
-
   // Render the screen
   noStroke();
   fill(100);
@@ -63,29 +77,35 @@ function draw() {
   if (ball.y < 0) {
     ball.y = 0;
     ball.yspeed *= -1;
+    bounceSound.play();
   }
   
   if (ball.y > height) {
     ball.y = height;
     ball.yspeed *= -1;
+    bounceSound.play();
   }
   
   if (ball.x >= width) {
     scoreL ++;
     ball.xspeed *= -1;
+    scoreSound.play();
   }
   if (ball.x <= 0) {
     scoreR ++;
     ball.xspeed *= -1;
+    scoreSound.play();
   }
   
   fill(100);
   if (scoreR == 5) {
     text('Player Right Wins!!!!', 200, 200);
+    winSound.play();
     noLoop();
   }
   if (scoreL == 5) {
     text('Player Left Wins!!!!', 200, 200);
+    winSound.play();
     noLoop();
   }
   
@@ -93,6 +113,26 @@ function draw() {
   textSize(20);
   text('score:'+ scoreR, 510, 20);
   text('score:'+ scoreL, 25, 20);
+  
+  // See if ball is hitting right player
+  if (ball.x > width - 15 && ball.y >= playerR && ball.y <= playerR + 100) {
+    ball.xspeed *= -1;
+    bounceSound.play();
+  }
+  // See if ball is hitting left player
+  if (ball.x < 15 && ball.y >= playerL && ball.y <= playerL + 100) {
+    ball.xspeed *= -1;
+    bounceSound.play();
+  }
+  
+  //cheat codes
+  if (keyIsDown(187)) {
+    scoreL ++;
+  }
+  if (keyIsDown(49)) {
+    scoreL ++;
+  }
+}
   
   // See if ball is hitting right player
   if (ball.x > width - 15 && ball.y >= playerR && ball.y <= playerR + 100) {
