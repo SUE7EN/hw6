@@ -1,11 +1,20 @@
 //https://editor.p5js.org/SUE7EN/sketches/lbKrafDy3
 
+var damageSound;
+var bulletSound;
+var healSound;
+var bgmSound;
+
 function preload() {
   player1Image = loadImage('player1.png');
   player2Image = loadImage('player2.png');
   healthbar1Image = loadImage('healthbar1.png');
   healthbar2Image = loadImage('healthbar2.png');
   healImage = loadImage('heal.png');
+  damageSound = loadSound("damage.mp3");
+  healSound = loadSound("heal.mp3");
+  bulletSound = loadSound("bullet.mp3");
+  bgmSound = loadSound("bgm.mp3");
 }
 
 var speed = 10;
@@ -40,6 +49,7 @@ var bullet2 = {
 
 function setup() {
   createCanvas(600, 280);
+  bgmSound.play();
 }
 
 function draw() {
@@ -174,11 +184,13 @@ function draw() {
     bullet1.x = -10;
     bullet1.y = -10;
     healthbar2 -= 10;
+    damageSound.play();
   }
   if (dist(bullet2.x, bullet2.y, player1.w, player1.h) <= 40 &&   bullet2.fire > 0) {
     bullet2.x = -10;
     bullet2.y = -10;
     healthbar1 -= 10;
+    damageSound.play();
   }
   
   //ending
